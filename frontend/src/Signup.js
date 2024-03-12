@@ -2,15 +2,16 @@ import React, { useState } from 'react';
 import loginImage from "./resources/images/login.png";
 import "./styles/style.css";
 import { Link } from 'react-router-dom';
-import validation from './loginValidation';
+import validation from './signupValidation';
 
 function Signup() {
   const [values, setValues] = useState({
-    fullName: "",
+    name: "",
     email: "",
     phone: "",
     password: "",
     confirmPassword: ""
+    
   });
   
   const [errors, setErrors] = useState({});
@@ -26,7 +27,7 @@ function Signup() {
   const handleSubmit = (event) => {
     event.preventDefault();
     setErrors(validation(values));
-    // You might want to add further logic here for form submission
+    
   }
 
   return (
@@ -52,10 +53,11 @@ function Signup() {
                 type="text"
                 className="form-control"
                 placeholder="Full Name"
-                name="fullName"
+                name="name"
                 value={values.fullName}
                 onChange={handleInput}
               />
+              {errors.name && <span className="text-danger">{errors.name}</span>}
             </div>
 
             <div className="mb-3">
@@ -79,6 +81,7 @@ function Signup() {
                 value={values.phone}
                 onChange={handleInput}
               />
+              {errors.phone && <span className="text-danger">{errors.phone}</span>}
             </div>
 
             <div className="mb-3">
