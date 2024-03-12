@@ -1,83 +1,127 @@
-import React from 'react'
+import React, { useState } from 'react';
 import loginImage from "./resources/images/login.png";
 import "./styles/style.css";
-import {Link} from 'react-router-dom'
-function Signup(){
-    return(
-        <div className="container-fluid">
+import { Link } from 'react-router-dom';
+import validation from './loginValidation';
+
+function Signup() {
+  const [values, setValues] = useState({
+    fullName: "",
+    email: "",
+    phone: "",
+    password: "",
+    confirmPassword: ""
+  });
+  
+  const [errors, setErrors] = useState({});
+
+  const handleInput = (event) => {
+    const { name, value } = event.target;
+    setValues(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setErrors(validation(values));
+    // You might want to add further logic here for form submission
+  }
+
+  return (
+    <div className="container-fluid">
       <div className="row">
         <div
           className="col-7"
           style={{ backgroundImage: `url(${loginImage})`, height: "100vh" }}
         >
-          {/* this part is left side of the division */}
+          {/* Left side content */}
         </div>
         <div
           className="col-5 d-flex align-items-center justify-content-center "
           style={{ height: "100vh" }}
         >
-          {/* this part is right side of the division. All the login form will stay here */}
-
-          <form action="">
+          {/* Right side content (Signup form) */}
+          <form onSubmit={handleSubmit}>
             <h2>Sign Up</h2>
             <p className="opacity-75">Create Your account</p>
 
-            {/* Email input */}
-            <div className="mb-3 ">
+            <div className="mb-3">
               <input
                 type="text"
                 className="form-control"
                 placeholder="Full Name"
-              ></input>
+                name="fullName"
+                value={values.fullName}
+                onChange={handleInput}
+              />
             </div>
-            <div className="mb-3 ">
+
+            <div className="mb-3">
               <input
                 type="email"
                 className="form-control"
                 placeholder="Email Address"
-              ></input>
+                name="email"
+                value={values.email}
+                onChange={handleInput}
+              />
+              {errors.email && <span className="text-danger">{errors.email}</span>}
             </div>
-            <div className="mb-3 ">
+
+            <div className="mb-3">
               <input
                 type="text"
                 className="form-control"
-                placeholder="phone"
-              ></input>
+                placeholder="Phone"
+                name="phone"
+                value={values.phone}
+                onChange={handleInput}
+              />
             </div>
 
-            {/* password field */}
             <div className="mb-3">
               <input
                 type="password"
                 className="form-control"
                 placeholder="Password"
+                name="password"
+                value={values.password}
+                onChange={handleInput}
               />
+              {errors.password && <span className="text-danger">{errors.password}</span>}
             </div>
+
             <div className="mb-3">
               <input
                 type="password"
                 className="form-control"
                 placeholder="Confirm Password"
+                name="confirmPassword"
+                value={values.confirmPassword}
+                onChange={handleInput}
               />
+              {errors.confirmPassword && <span className="text-danger">{errors.confirmPassword}</span>}
             </div>
 
-            {/* terms and policies */}
-            <p className="opacity-75">You are agree to our terms and policies</p>
+            <p className="opacity-75">You agree to our terms and policies</p>
 
-            {/* login button */}
-            <div class="d-grid gap-2">
-              <button class="login-button" type="button">
+            <div className="d-grid gap-2">
+              <button className="login-button" type="submit">
                 Sign Up
               </button>
-                <p>
-                   Already have an account? 
-                    <a class="Link" href="/"> Login</a>
-                </p>
+              <p>
+                Already have an account? 
+                <Link className="Link" to="/"> Login</Link>
+              </p>
             </div>
           </form>
         </div>
       </div>
     </div>
-    )
+  );
 }
-export default Signup
+
+export default Signup;
+

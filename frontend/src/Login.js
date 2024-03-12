@@ -73,7 +73,7 @@ function Login() {
 
             {/* login button */}
             <div class="d-grid gap-2">
-              <button type="submit" class="login-button" type="button">
+              <button type="submit" class="login-button">
                 Login
               </button>
               <p>
