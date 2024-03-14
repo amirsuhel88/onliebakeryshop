@@ -2,12 +2,15 @@ import React, { useState } from "react";
 import loginImage from "./resources/images/login.png";
 import "./styles/style.css";
 import validation from "./loginValidation";
+import { useNavigate } from "react-router-dom";
+import axios from "axios"
 
 function Login() {
   const [values, setValues] = useState({
     email: "",
     password: "",
   })
+  const navigate = useNavigate();
   const [errors, setErrors] = useState({})
   const handleInput = (event) => {
     setValues(prev => ({
@@ -18,6 +21,23 @@ function Login() {
   const handleSubmit = (event) => {
     event.preventDefault();
     setErrors(validation(values));
+    if (
+
+      errors.email === "" &&
+     
+      errors.password === ""
+    ) {
+      axios
+        .post("http://localhost:8081/api/v1/login", values)
+        .then(res => {
+          if(res.data==="success"){
+            navigate('/home');
+          }else{
+            alert("No record found in database")
+          }
+        })
+        .catch((err) => console.log(err));
+    }
   }
 
   return (

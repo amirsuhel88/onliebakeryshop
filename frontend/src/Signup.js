@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import loginImage from "./resources/images/login.png";
 import "./styles/style.css";
-import { Link } from 'react-router-dom';
-import validation from './signupValidation';
+import { Link, useNavigate } from "react-router-dom";
+import validation from "./signupValidation";
+import axios from "axios";
 
 function Signup() {
   const [values, setValues] = useState({
@@ -10,25 +11,39 @@ function Signup() {
     email: "",
     phone: "",
     password: "",
-    confirmPassword: ""
-    
+    confirmPassword: "",
   });
-  
+
+  const navigate = useNavigate();
   const [errors, setErrors] = useState({});
 
   const handleInput = (event) => {
     const { name, value } = event.target;
-    setValues(prev => ({
+    setValues((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
-  }
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     setErrors(validation(values));
-    
-  }
+
+    //checking for error to call api.
+    if (
+      errors.name === "" &&
+      errors.email === "" &&
+      errors.phone === "" &&
+      errors.password === ""
+    ) {
+      axios
+        .post("http://localhost:8081/api/v1/signup", values)
+        .then(res => {
+          navigate('/login');
+        })
+        .catch((err) => console.log(err));
+    }
+  };
 
   return (
     <div className="container-fluid">
@@ -57,7 +72,9 @@ function Signup() {
                 value={values.fullName}
                 onChange={handleInput}
               />
-              {errors.name && <span className="text-danger">{errors.name}</span>}
+              {errors.name && (
+                <span className="text-danger">{errors.name}</span>
+              )}
             </div>
 
             <div className="mb-3">
@@ -69,7 +86,9 @@ function Signup() {
                 value={values.email}
                 onChange={handleInput}
               />
-              {errors.email && <span className="text-danger">{errors.email}</span>}
+              {errors.email && (
+                <span className="text-danger">{errors.email}</span>
+              )}
             </div>
 
             <div className="mb-3">
@@ -81,7 +100,9 @@ function Signup() {
                 value={values.phone}
                 onChange={handleInput}
               />
-              {errors.phone && <span className="text-danger">{errors.phone}</span>}
+              {errors.phone && (
+                <span className="text-danger">{errors.phone}</span>
+              )}
             </div>
 
             <div className="mb-3">
@@ -93,7 +114,9 @@ function Signup() {
                 value={values.password}
                 onChange={handleInput}
               />
-              {errors.password && <span className="text-danger">{errors.password}</span>}
+              {errors.password && (
+                <span className="text-danger">{errors.password}</span>
+              )}
             </div>
 
             <div className="mb-3">
@@ -105,7 +128,9 @@ function Signup() {
                 value={values.confirmPassword}
                 onChange={handleInput}
               />
-              {errors.confirmPassword && <span className="text-danger">{errors.confirmPassword}</span>}
+              {errors.confirmPassword && (
+                <span className="text-danger">{errors.confirmPassword}</span>
+              )}
             </div>
 
             <p className="opacity-75">You agree to our terms and policies</p>
@@ -115,8 +140,11 @@ function Signup() {
                 Sign Up
               </button>
               <p>
-                Already have an account? 
-                <Link className="Link" to="/"> Login</Link>
+                Already have an account?
+                <Link className="Link" to="/">
+                  {" "}
+                  Login
+                </Link>
               </p>
             </div>
           </form>
@@ -127,4 +155,3 @@ function Signup() {
 }
 
 export default Signup;
-

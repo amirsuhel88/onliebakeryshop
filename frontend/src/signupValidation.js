@@ -11,7 +11,7 @@ function validation(values) {
 
     //phone validation
     if (values.phone === "") {
-        error.phone = "Email should not be empty"
+        error.phone = "phone should not be empty"
       } else if (!phone_pattern.test(values.phone)) {
         error.phone = "Digit can't exceed or less than 10"
       } else {
@@ -52,7 +52,7 @@ function validation(values) {
     } else {
       error.confirmPassword = ""
     }
-    //it checks for of password and confirm password
+    //it checks match for of password and confirm password
     if (values.confirmPassword === "") {
         error.confirmPassword = "Confirm password should not be empty";
       } else if (values.confirmPassword !== values.password) {
